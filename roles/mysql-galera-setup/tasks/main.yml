@@ -21,4 +21,13 @@
 - name: "Update cache"
   command: "sudo apt-get update --allow-insecure-repositories" 
 
-    
+- name: "Install package"
+  apt:
+      pkg:
+        - galera-4
+        - mysql-wsrep-8.0
+
+- name: "Copy mysql config"
+  template:
+    src: mysql.cnf.j2
+    dest: /etc/mysql/mysql.conf.d/mysqld.cnf 
