@@ -1,2 +1,24 @@
 ---
 # tasks file for mysql-galera-setup
+- name: "Check if mysql already installed"
+  stat:
+    path: "/etc/init.d/mysql"
+  register:  mysql_init_present
+
+- name: "Copy repos"
+  template:
+    src: galera.list.j2
+    dest: /etc/apt/sources.list.d/galera.list
+
+- name: "Pin reference to galera repo"
+  template:
+    src: galera.perf.j2
+    dest: /etc/apt/preferences.d/galera.pref
+    
+- name: "Add signing key"
+  command: "apt-key adv --keyserver keyserver.ubuntu.com --recv BC19DDBA"
+
+- name: "Update cache"
+  command: "sudo apt-get update --allow-insecure-repositories" 
+
+    
